@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Constants from '~/common/Constants';
+import AvatarCustoms from '~/components/AvatarCustoms';
 import ButtonCustom from '~/components/ButtonCustom';
 import VectorIcon from '~/components/VectorIcon';
 import {dataUser, logout} from '~/features/userReducer';
@@ -33,7 +34,7 @@ function MenuScreen() {
             paddingHorizontal: 10,
           }}>
           <View style={styles.boxInfo}>
-            <Image source={{uri: currentUser.imageUrl}} style={styles.avatar} />
+            <AvatarCustoms imageUrl={currentUser.imageUrl} />
             <Text style={styles.titleFullName}>{currentUser.fullName}</Text>
 
             <TouchableOpacity style={styles.btnEdit}>
@@ -101,7 +102,10 @@ function MenuScreen() {
             />
           </TouchableOpacity>
 
-          <ButtonCustom title={'Đăng xuất'} onPress={() => dispatch(logout)} />
+          <ButtonCustom
+            title={'Đăng xuất'}
+            onPress={() => dispatch(logout())}
+          />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -171,13 +175,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10
+    marginBottom: 10,
   },
-  textInBox:{
+  textInBox: {
     color: Constants.darkBlue,
     fontWeight: '600',
     fontSize: 16,
-  }
+  },
 });
 
 export default MenuScreen;

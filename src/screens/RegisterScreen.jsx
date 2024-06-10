@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   Image,
   StyleSheet,
@@ -12,19 +12,24 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { Commons } from '~/common/Commons';
+import {AuthContext} from '~/common/AppContext';
+import {Commons} from '~/common/Commons';
 import Constants from '~/common/Constants';
 import ButtonCustom from '~/components/ButtonCustom';
 import TextCustom from '~/components/TextCustom';
 import VectorIcon from '~/components/VectorIcon';
 
-const {height} = Dimensions.get('screen');
-
 function RegisterScreen() {
   const navigation = useNavigation();
+  const {register} = useContext(AuthContext);
   const [data, setData] = useState({
     username: '',
     password: '',
+    confirmPW: '',
+    fullName: '',
+    email: '',
+    phone: '',
+    address: '',
   });
 
   const onChangeText = (name, text) => {
@@ -32,12 +37,30 @@ function RegisterScreen() {
   };
 
   const handleRegister = () => {
-    console.log(123);
-    if (!Commons.validateEmail(data.username)) {
+    if (!Commons.validateEmail(data.email)) {
       Toast.show({
         type: 'error',
         text1: 'Vui lòng nhập đúng định dạng email',
       });
+    } else if (!Commons.validatePassword(data.password)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Mật khẩu phải có độ dài tối thiểu là 8 ký tự',
+        text2:
+          'Mật khẩu phải có ít nhất một chữ cái viết thường, một chữ cái viết hoa, một chữ số, một ký tự đặc biệt',
+      });
+    } else if (data.password !== data.confirmPW) {
+      Toast.show({
+        type: 'error',
+        text1: 'Mật khẩu không trùng khớp',
+      });
+    } else if (!Commons.validatePhoneNumber(data.phone)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Số điện thoại không hợp lệ',
+      });
+    } else {
+      register(data,navigation);
     }
   };
 
@@ -102,6 +125,19 @@ function RegisterScreen() {
             Icon={
               <VectorIcon.FontAwesomeVectorIcon
                 name="user"
+                size={20}
+                color={Constants.darkBlue}
+              />
+            }
+          />
+          <Text style={styles.labelInput}>Địa chỉ nhà</Text>
+          <TextCustom
+            label={'Địa chỉ nhà'}
+            name={'address'}
+            onChangeText={onChangeText}
+            Icon={
+              <VectorIcon.EntypoVectorIcon
+                name="address"
                 size={20}
                 color={Constants.darkBlue}
               />
@@ -186,7 +222,7 @@ const styles = StyleSheet.create({
   boxLogin: {
     paddingHorizontal: 20,
     width: '100%',
-    height: "100%"
+    height: '100%',
   },
   labelInput: {
     color: Constants.TextColor,
