@@ -3,7 +3,7 @@ import AuthenticationStack from './AuthenticationStack';
 import MainStack from './MainStack';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
-import { dataUser } from '~/features/userReducer';
+import {dataUser } from '~/features/userReducer';
 
 function Navigation() {
   const {token} = useSelector(dataUser)

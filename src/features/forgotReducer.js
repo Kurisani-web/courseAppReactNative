@@ -5,11 +5,12 @@ export const forgotSlice = createSlice({
   initialState: {
     email: '',
     toggle: false,
+    codeNumber: "",
   },
   reducers: {
-    handleSent: (action, payload) => {
-      action.email = payload.email;
-      action.toggle = true;
+    handleSent: (state,action) => {
+      state.email = action.payload.email;
+      state.toggle = true;
     },
   },
 });

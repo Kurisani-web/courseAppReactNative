@@ -1,5 +1,3 @@
-import {useState} from 'react';
-import {Text, View} from 'react-native';
 import SentEmail from './SentEmail';
 import VerifyCode from './VerifyCode';
 import {useSelector} from 'react-redux';

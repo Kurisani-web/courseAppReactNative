@@ -11,14 +11,16 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
+import { Commons } from '~/common/Commons';
 import Constants from '~/common/Constants';
-import ButtomCustom from '~/components/ButtomCustom';
+import ButtonCustom from '~/components/ButtonCustom';
 import TextCustom from '~/components/TextCustom';
 import VectorIcon from '~/components/VectorIcon';
 
 const {height} = Dimensions.get('screen');
 
-function LoginScreen() {
+function RegisterScreen() {
   const navigation = useNavigation();
   const [data, setData] = useState({
     username: '',
@@ -29,8 +31,14 @@ function LoginScreen() {
     setData({...data, [name]: text});
   };
 
-  const handleLogin = () => {
+  const handleRegister = () => {
     console.log(123);
+    if (!Commons.validateEmail(data.username)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Vui lòng nhập đúng định dạng email',
+      });
+    }
   };
 
   return (
@@ -40,21 +48,10 @@ function LoginScreen() {
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         keyboardShouldPersistTaps="handled">
-        <Image
-          source={require('~/assets/Images/LogoApp.png')}
-          style={styles.imageLogo}
-        />
-
         <View style={styles.boxLogin}>
-          <Text style={styles.title}>Chào mừng đã đến ứng dụng</Text>
-          <Text
-            style={{
-              fontWeight: '400',
-              fontSize: 13,
-              marginTop: 10,
-              marginBottom: 20,
-            }}>
-            Hãy đăng nhập ứng dụng để tận hưởng đầy đủ dịch vụ của ứng dụng
+          <Text style={styles.title}>Bạn chưa có tài khoản?</Text>
+          <Text style={{fontWeight: '400', fontSize: 13, marginTop: 4}}>
+            Đừng lo hãy tạo một tài khoản để sử dụng
           </Text>
           <Text style={styles.labelInput}>Tài khoản</Text>
           <TextCustom
@@ -83,6 +80,60 @@ function LoginScreen() {
               />
             }
           />
+          <Text style={styles.labelInput}>Nhập lại mật khẩu</Text>
+          <TextCustom
+            label={'Nhập lại mật khẩu'}
+            name={'confirmPW'}
+            onChangeText={onChangeText}
+            password={true}
+            Icon={
+              <VectorIcon.FontAwesomeVectorIcon
+                name="lock"
+                size={20}
+                color={Constants.darkBlue}
+              />
+            }
+          />
+          <Text style={styles.labelInput}>Họ và tên</Text>
+          <TextCustom
+            label={'Họ và tên'}
+            name={'fullName'}
+            onChangeText={onChangeText}
+            Icon={
+              <VectorIcon.FontAwesomeVectorIcon
+                name="user"
+                size={20}
+                color={Constants.darkBlue}
+              />
+            }
+          />
+          <Text style={styles.labelInput}>Địa chỉ email</Text>
+          <TextCustom
+            label={'Email'}
+            name={'email'}
+            onChangeText={onChangeText}
+            Icon={
+              <VectorIcon.MaterialVectorIcon
+                name="alternate-email"
+                size={20}
+                color={Constants.darkBlue}
+              />
+            }
+          />
+          <Text style={styles.labelInput}>Số điện thoại</Text>
+          <TextCustom
+            label={'Số điện thoại'}
+            name={'phone'}
+            onChangeText={onChangeText}
+            keyboardType={'number'}
+            Icon={
+              <VectorIcon.FontAwesomeVectorIcon
+                name="phone"
+                size={20}
+                color={Constants.darkBlue}
+              />
+            }
+          />
 
           <View
             style={{
@@ -101,14 +152,14 @@ function LoginScreen() {
             </TouchableOpacity>
           </View>
 
-          <ButtomCustom title={'Đăng nhập'} onPress={() => handleLogin()}/>
+          <ButtonCustom title={'Đăng ký'} onPress={() => handleRegister()} />
 
           <TouchableOpacity
             style={{marginVertical: 10}}
-            onPress={() => navigation.navigate('Register')}>
+            onPress={() => navigation.navigate('Login')}>
             <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
-              Chưa có tài khoản?
-              <Text style={{color: Constants.darkBlue}}> Đăng ký ngay.</Text>
+              Đã có tài khoản?
+              <Text style={{color: Constants.darkBlue}}> Đăng nhập.</Text>
             </Text>
           </TouchableOpacity>
         </View>
@@ -120,21 +171,11 @@ function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Constants.mainColor,
+    backgroundColor: Constants.white,
   },
   scrollContainer: {
     alignItems: 'center',
     flexGrow: 1,
-    paddingTop: 20,
-  },
-  imageLogo: {
-    flexDirection: 'row',
-    width: 200,
-    height: 200,
-    marginVertical: 40,
-    resizeMode: 'cover',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
   },
   title: {
     color: Constants.darkBlue,
@@ -143,14 +184,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   boxLogin: {
-    backgroundColor: 'white',
     paddingHorizontal: 20,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
     width: '100%',
-    height: height * 0.6,
-    position: 'absolute',
-    bottom: 0,
+    height: "100%"
   },
   labelInput: {
     color: Constants.TextColor,
@@ -160,5 +196,4 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
 });
-
-export default LoginScreen;
+export default RegisterScreen;

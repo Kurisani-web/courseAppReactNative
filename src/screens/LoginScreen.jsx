@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   Image,
   StyleSheet,
@@ -11,15 +11,18 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
+import {AuthContext} from '~/common/AppContext';
 import Constants from '~/common/Constants';
-import ButtomCustom from '~/components/ButtomCustom';
+import ButtonCustom from '~/components/ButtonCustom';
 import TextCustom from '~/components/TextCustom';
 import VectorIcon from '~/components/VectorIcon';
 
 const {height} = Dimensions.get('screen');
 
-function RegisterScreen() {
+function LoginScreen() {
   const navigation = useNavigation();
+  const {login} = useContext(AuthContext);
   const [data, setData] = useState({
     username: '',
     password: '',
@@ -29,8 +32,15 @@ function RegisterScreen() {
     setData({...data, [name]: text});
   };
 
-  const handleRegiter = () => {
-    console.log(123);
+  const handleLogin = () => {
+    if (Object.values(data).some(field => field === '')) {
+      Toast.show({
+        type: 'error',
+        text1: 'Vui lòng nhập đầy đủ thông tin',
+      });
+    } else {
+      login(data);
+    }
   };
 
   return (
@@ -46,9 +56,15 @@ function RegisterScreen() {
         />
 
         <View style={styles.boxLogin}>
-          <Text style={styles.title}>Bạn chưa có tài khoản?</Text>
-          <Text style={{fontWeight: '400', fontSize: 13, marginTop: 4}}>
-            Không sao hãy tạo một tài khoản để sử dụng
+          <Text style={styles.title}>Chào mừng đã đến ứng dụng</Text>
+          <Text
+            style={{
+              fontWeight: '400',
+              fontSize: 13,
+              marginTop: 10,
+              marginBottom: 20,
+            }}>
+            Hãy đăng nhập ứng dụng để tận hưởng đầy đủ dịch vụ của ứng dụng
           </Text>
           <Text style={styles.labelInput}>Tài khoản</Text>
           <TextCustom
@@ -77,60 +93,6 @@ function RegisterScreen() {
               />
             }
           />
-          <Text style={styles.labelInput}>Nhập lại mật khẩu</Text>
-          <TextCustom
-            label={'Nhập lại mật khẩu'}
-            name={'confirmPW'}
-            onChangeText={onChangeText}
-            password={true}
-            Icon={
-              <VectorIcon.FontAwesomeVectorIcon
-                name="lock"
-                size={20}
-                color={Constants.darkBlue}
-              />
-            }
-          />
-          <Text style={styles.labelInput}>Họ và tên</Text>
-          <TextCustom
-            label={'Họ và tên'}
-            name={'fullName'}
-            onChangeText={onChangeText}
-            Icon={
-              <VectorIcon.FontAwesomeVectorIcon
-                name="user"
-                size={20}
-                color={Constants.darkBlue}
-              />
-            }
-          />
-          <Text style={styles.labelInput}>Địa chỉ email</Text>
-          <TextCustom
-            label={'Email'}
-            name={'email'}
-            onChangeText={onChangeText}
-            Icon={
-              <VectorIcon.MaterialVectorIcon
-                name="alternate-email"
-                size={20}
-                color={Constants.darkBlue}
-              />
-            }
-          />
-          <Text style={styles.labelInput}>Số điện thoại</Text>
-          <TextCustom
-            label={'Số điện thoại'}
-            name={'phone'}
-            onChangeText={onChangeText}
-            keyboardType={'number'}
-            Icon={
-              <VectorIcon.FontAwesomeVectorIcon
-                name="phone"
-                size={20}
-                color={Constants.darkBlue}
-              />
-            }
-          />
 
           <View
             style={{
@@ -149,14 +111,14 @@ function RegisterScreen() {
             </TouchableOpacity>
           </View>
 
-          <ButtomCustom title={'Đăng ký'} onPress={() => handleRegiter()} />
+          <ButtonCustom title={'Đăng nhập'} onPress={() => handleLogin()} />
 
           <TouchableOpacity
             style={{marginVertical: 10}}
-            onPress={() => navigation.navigate('Login')}>
+            onPress={() => navigation.navigate('Register')}>
             <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
-              Đã có tài khoản?
-              <Text style={{color: Constants.darkBlue}}> Đăng nhập.</Text>
+              Chưa có tài khoản?
+              <Text style={{color: Constants.darkBlue}}> Đăng ký ngay.</Text>
             </Text>
           </TouchableOpacity>
         </View>
@@ -196,6 +158,9 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     width: '100%',
+    height: height * 0.6,
+    position: 'absolute',
+    bottom: 0,
   },
   labelInput: {
     color: Constants.TextColor,
@@ -205,4 +170,5 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
 });
-export default RegisterScreen;
+
+export default LoginScreen;

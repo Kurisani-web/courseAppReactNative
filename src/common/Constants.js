@@ -9,6 +9,7 @@ const Constants = {
   white: '#fff',
   black: '#000',
   gray: '#808080',
+  grayOpacity: "#b9b9b9",
   darkBlue: "#363062"
 };
 export default Constants;

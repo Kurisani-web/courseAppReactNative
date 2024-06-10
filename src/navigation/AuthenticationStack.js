@@ -10,7 +10,11 @@ function AuthenticationStack() {
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
-      <Stack.Screen name="ForgotPW" component={ForgotPW} />
+      <Stack.Screen
+        name="ForgotPW"
+        component={ForgotPW}
+        options={{headerShown: true, title: 'Hủy'}}
+      />
     </Stack.Navigator>
   );
 }

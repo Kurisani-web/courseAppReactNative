@@ -1,7 +1,7 @@
 import {Button, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import Constants from '~/common/Constants';
 
-function ButtomCustom({title, onPress, style}) {
+function ButtonCustom({title, onPress, style}) {
   return (
     <TouchableOpacity onPress={onPress} style={style || styles.btn}>
       <Text style={styles.btnText}>{title}</Text>
@@ -23,4 +23,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ButtomCustom;
+export default ButtonCustom;
