@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import {
   Image,
   StyleSheet,
@@ -14,11 +15,23 @@ import Constants from '~/common/Constants';
 import AvatarCustoms from '~/components/AvatarCustoms';
 import ButtonCustom from '~/components/ButtonCustom';
 import VectorIcon from '~/components/VectorIcon';
-import {dataUser, logout} from '~/features/userReducer';
+import {dataUser, logout} from '~/redux/features/userReducer';
 
 const {height} = Dimensions.get('screen');
 
+const MENU_ITEM = [
+  {
+    title: 'Khóa học đã mua',
+    navigate: 'MyCourse',
+  },
+  {
+    title: 'Công việc đã ứng tuyển',
+    navigate: 'MyRecruitment',
+  },
+];
+
 function MenuScreen() {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const {currentUser} = useSelector(dataUser);
 
@@ -37,7 +50,9 @@ function MenuScreen() {
             <AvatarCustoms imageUrl={currentUser.imageUrl} />
             <Text style={styles.titleFullName}>{currentUser.fullName}</Text>
 
-            <TouchableOpacity style={styles.btnEdit}>
+            <TouchableOpacity
+              style={styles.btnEdit}
+              onPress={() => navigation.navigate('EditProfile')}>
               <VectorIcon.AntDesignVectorIcon
                 name="edit"
                 size={20}
@@ -76,31 +91,23 @@ function MenuScreen() {
         </View>
 
         <View style={styles.boxLogin}>
-          <Text style={{fontSize: 16}}>Cài đặt</Text>
+          <View>
+            <Text style={{fontSize: 16}}>Cài đặt</Text>
 
-          <TouchableOpacity style={styles.btnInBox} activeOpacity={1}>
-            <Text style={styles.textInBox}>Tài khoản</Text>
-            <VectorIcon.MaterialVectorIcon
-              name="keyboard-arrow-right"
-              size={20}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.btnInBox} activeOpacity={1}>
-            <Text style={styles.textInBox}>Khóa học đã mua</Text>
-            <VectorIcon.MaterialVectorIcon
-              name="keyboard-arrow-right"
-              size={20}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.btnInBox} activeOpacity={1}>
-            <Text style={styles.textInBox}>Công việc đã ứng tuyển</Text>
-            <VectorIcon.MaterialVectorIcon
-              name="keyboard-arrow-right"
-              size={20}
-            />
-          </TouchableOpacity>
+            {MENU_ITEM.map(item => (
+              <TouchableOpacity
+                style={styles.btnInBox}
+                activeOpacity={1}
+                onPress={() => navigation.navigate(item.navigate)}
+                key={item.navigate}>
+                <Text style={styles.textInBox}>{item.title}</Text>
+                <VectorIcon.MaterialVectorIcon
+                  name="keyboard-arrow-right"
+                  size={20}
+                />
+              </TouchableOpacity>
+            ))}
+          </View>
 
           <ButtonCustom
             title={'Đăng xuất'}
@@ -151,8 +158,8 @@ const styles = StyleSheet.create({
     height: height * 0.6,
     position: 'absolute',
     bottom: 0,
+    justifyContent: 'space-between',
   },
-  labelBoxLogin: {},
   titleFullName: {
     marginHorizontal: 10,
     textAlignVertical: 'bottom',

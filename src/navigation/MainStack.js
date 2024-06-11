@@ -2,9 +2,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import VectorIcon from '~/components/VectorIcon';
 
 import MenuStack from './MenuStack';
-import Recruitment from '~/screens/Recruitment';
-import Courses from '~/screens/Courses';
 import HomeStack from './HomeStack';
+import RecruitmentStack from './RecruitmentStack';
+import CourseStack from './CourseStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -12,10 +12,10 @@ function MainStack({routeName}) {
   const show =
     routeName === 'Home' ||
     routeName === 'Recruitment' ||
-    routeName === 'Courses' ||
-    routeName === 'MenuStack';
+    routeName === 'Course' ||
+    routeName === 'Menu';
 
-    return (
+  return (
     <Tab.Navigator screenOptions={{headerShown: false}}>
       <Tab.Screen
         name="HomeStack"
@@ -33,10 +33,11 @@ function MainStack({routeName}) {
         }}
       />
       <Tab.Screen
-        name="Recruitment"
-        component={Recruitment}
+        name="RecruitmentStack"
+        component={RecruitmentStack}
         options={{
           tabBarLabel: 'Tuyển dụng',
+          tabBarStyle: {display: show ? 'flex' : 'none'},
           tabBarIcon: ({color, size}) => (
             <VectorIcon.EntypoVectorIcon
               color={color}
@@ -47,10 +48,11 @@ function MainStack({routeName}) {
         }}
       />
       <Tab.Screen
-        name="Courses"
-        component={Courses}
+        name="CourseStack"
+        component={CourseStack}
         options={{
           tabBarLabel: 'Khóa học',
+          tabBarStyle: {display: show ? 'flex' : 'none'},
           tabBarIcon: ({color, size}) => (
             <VectorIcon.EntypoVectorIcon
               color={color}
@@ -65,6 +67,7 @@ function MainStack({routeName}) {
         component={MenuStack}
         options={{
           tabBarLabel: () => null,
+          tabBarStyle: {display: show ? 'flex' : 'none'},
           tabBarIcon: ({color, size}) => (
             <VectorIcon.EntypoVectorIcon
               color={color}

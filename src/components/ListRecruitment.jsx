@@ -1,16 +1,19 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {useSelector} from 'react-redux';
-import {Commons} from '~/common/Commons';
+import {useNavigation} from '@react-navigation/native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Constants from '~/common/Constants';
-import {dataRecruitment} from '~/features/recruitmentReducer';
 
-function ListRecruitment() {
-  const {data} = useSelector(dataRecruitment);
+function ListRecruitment({data = []}) {
+  const navigation = useNavigation();
 
   return (
     <>
       {data.map(item => (
-        <View style={styles.boxCourse} key={item._id}>
+        <TouchableOpacity
+          style={styles.boxCourse}
+          key={item._id}
+          onPress={() =>
+            navigation.navigate('DetailRecruitment', {data: item})
+          }>
           <View style={styles.boxInfo}>
             <Text style={styles.titleRecruitment} numberOfLines={2}>
               {item.nameRecruitment}
@@ -19,7 +22,7 @@ function ListRecruitment() {
               Số lượng: {item.quantity}
             </Text>
           </View>
-        </View>
+        </TouchableOpacity>
       ))}
     </>
   );
@@ -46,8 +49,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: Constants.darkBlue,
   },
-  quantity: {
-  }
+  quantity: {},
 });
 
 export default ListRecruitment;

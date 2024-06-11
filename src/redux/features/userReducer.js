@@ -10,8 +10,12 @@ export const userSlice = createSlice({
   reducers: {
     saveInfo: (state, action) => {
       const payload = action.payload;
-      state.token = payload.token;
       state.currentUser = payload;
+    },
+    loginReducer: (state, action) => {
+      const payload = action.payload;
+      state.token = payload.token;
+      state.currentUser = payload.currentUser;
     },
     logout: (state, action) => {
       AsyncStorage.removeItem('currentUser');
@@ -21,7 +25,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const {saveInfo, logout} = userSlice.actions;
+export const {saveInfo, logout, loginReducer} = userSlice.actions;
 
 export const dataUser = state => state.userReducer;
 

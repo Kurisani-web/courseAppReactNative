@@ -3,7 +3,7 @@ import Constants from '~/common/Constants';
 
 function ButtonCustom({title, onPress, style}) {
   return (
-    <TouchableOpacity onPress={onPress} style={style || styles.btn}>
+    <TouchableOpacity onPress={onPress} style={style || styles.btn} activeOpacity={0.9}>
       <Text style={styles.btnText}>{title}</Text>
     </TouchableOpacity>
   );

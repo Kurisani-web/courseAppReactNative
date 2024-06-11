@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
     backgroundColor: "#fff",
+    marginVertical: 2
   },
   textInput: {
     width: '90%',

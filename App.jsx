@@ -3,7 +3,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Provider} from 'react-redux';
 
 import Navigation from './src/navigation';
-import {store} from './src/app/store';
+import {store} from './src/redux/store';
 import {AuthProvider} from '~/common/AppContext';
 
 function App() {

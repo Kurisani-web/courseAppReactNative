@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Constants from '~/common/Constants';
-import {dataForgot} from '~/features/forgotReducer';
+import {dataForgot} from '~/redux/features/forgotReducer';
 
 function VerifyCode() {
   const dispatch = useDispatch();

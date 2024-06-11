@@ -38,6 +38,11 @@ function LoginScreen() {
         type: 'error',
         text1: 'Vui lòng nhập đầy đủ thông tin',
       });
+    } else if (data.username === 'admin') {
+      Toast.show({
+        type: 'error',
+        text1: 'Ứng dụng không dành cho người quản lý',
+      });
     } else {
       login(data);
     }

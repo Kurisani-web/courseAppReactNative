@@ -6,7 +6,7 @@ import Constants from '~/common/Constants';
 import ButtonCustom from '~/components/ButtonCustom';
 import TextCustom from '~/components/TextCustom';
 import VectorIcon from '~/components/VectorIcon';
-import {handleSent} from '~/features/forgotReducer';
+import {handleSent} from '~/redux/features/forgotReducer';
 
 function SentEmail() {
   const [email, setEmail] = useState('');

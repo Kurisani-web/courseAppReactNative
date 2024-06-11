@@ -15,13 +15,24 @@ import IsLoading from '~/components/IsLoading';
 import ListCourse from '~/components/ListCourse';
 import ListRecruitment from '~/components/ListRecruitment';
 import VectorIcon from '~/components/VectorIcon';
-import {dataCourse, setCourse, searchInput} from '~/features/courseReducer';
-import {setRecruitment} from '~/features/recruitmentReducer';
+import {
+  dataCourse,
+  searchHomeInput,
+  setCourseHome,
+} from '~/redux/features/courseReducer';
+import { listMyCourse, setMyCourse } from '~/redux/features/myCourseReducer';
+import {
+  dataRecruitment,
+  setRecruitmentHome,
+} from '~/redux/features/recruitmentReducer';
 import {getAllCourse} from '~/services/courseService';
+import {getMyCourse} from '~/services/myCourseService';
 import {getAllRecruitment} from '~/services/recruitmentService';
 
 function HomeScreen() {
-  const {type, search} = useSelector(dataCourse);
+  const {typeHome, searchHome, dataHome} = useSelector(dataCourse);
+  const {dataHomeRecruitment} = useSelector(dataRecruitment);
+  const {dataMyCourse} = useSelector(listMyCourse);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -29,46 +40,54 @@ function HomeScreen() {
 
   const fetchCourse = useCallback(() => {
     setIsLoading(true);
-    getAllCourse({page: 1, perPage: 5, type: type, nameCourse: search})
+    getAllCourse({page: 1, perPage: 5, type: typeHome, nameCourse: searchHome})
       .then(course => {
-        dispatch(setCourse(course.data.data));
+        dispatch(setCourseHome(course.data.data));
         setIsLoading(false);
       })
       .catch(error => {
         console.log(error);
       });
-  }, [type, search]);
+  }, [typeHome, searchHome]);
 
   const fetchRecruitment = useCallback(() => {
     setIsLoading(true);
-    getAllRecruitment({page: 1, perPage: 5, nameRecruitment: search})
+    getAllRecruitment({page: 1, perPage: 5, nameRecruitment: searchHome})
       .then(recruitment => {
-        dispatch(setRecruitment(recruitment.data));
+        dispatch(setRecruitmentHome(recruitment.data));
         setIsLoading(false);
       })
       .catch(error => console.log(error));
-  }, [search]);
+  }, [searchHome]);
+
+  const fetchMyCourse = useCallback(() => {
+    getMyCourse({})
+      .then(course => {
+        dispatch(setMyCourse(course.data));
+      })
+      .catch(error => console.log(error));
+  }, []);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
       fetchCourse();
+      fetchMyCourse();
+      fetchRecruitment();
     }, 1000);
   }, []);
 
   useEffect(() => {
-    fetchRecruitment();
-  }, [fetchRecruitment]);
-
-  useEffect(() => {
     fetchCourse();
-  }, [fetchCourse]);
+    fetchRecruitment();
+    fetchMyCourse();
+  }, [fetchCourse, fetchRecruitment, fetchMyCourse]);
 
   if (isLoading) {
     return <IsLoading />;
   }
-  
+
   return (
     <ScrollView
       style={styles.container}
@@ -82,26 +101,28 @@ function HomeScreen() {
           <View style={styles.boxSearch}>
             <TextInput
               style={styles.searchInput}
-              placeholder="Tìm kiếm khóa học"
+              placeholder="Tìm khóa học và tuyển dụng"
               onChangeText={text => setSearchValue(text)}
-              value={search}
+              value={searchValue}
             />
             <TouchableOpacity
-              onPress={() => dispatch(searchInput(searchValue))}>
+              onPress={() => dispatch(searchHomeInput(searchValue))}>
               <VectorIcon.AntDesignVectorIcon name="search1" size={20} />
             </TouchableOpacity>
           </View>
-          {search && <TouchableOpacity
-            onPress={() => dispatch(searchInput(""))}
-            style={{padding: 2}}>
-            <VectorIcon.MaterialVectorIcon name="filter-list-off" size={24} />
-          </TouchableOpacity>}
+          {searchHome && (
+            <TouchableOpacity
+              onPress={() => dispatch(searchHomeInput(''))}
+              style={{padding: 2}}>
+              <VectorIcon.MaterialVectorIcon name="filter-list-off" size={24} />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
-      <ListCourse />
+      <ListCourse data={dataHome} type={typeHome} />
 
       <Text style={styles.label}>Tuyển nhân sự</Text>
-      <ListRecruitment />
+      <ListRecruitment data={dataHomeRecruitment} />
     </ScrollView>
   );
 }
@@ -132,9 +153,11 @@ const styles = StyleSheet.create({
     backgroundColor: Constants.grayOpacity,
     paddingHorizontal: 10,
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: Constants.borderGray,
   },
   searchInput: {
-    width: 150,
+    width: 200,
   },
 });
 

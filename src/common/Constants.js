@@ -12,5 +12,7 @@ const Constants = {
   grayOpacity: '#F5F7F9',
   darkBlue: '#363062',
   darkGray: '#3C444C',
+  success: "#6cb85c",
+  error: "#EF5350",
 };
 export default Constants;

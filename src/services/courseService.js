@@ -1,10 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import getToken from '~/common/getToken';
 import {httpRequest} from '~/utils/httprequest';
-
-const getToken = async () => {
-  const res = await AsyncStorage.getItem('currentUser');
-  return JSON.parse(res).token;
-};
 
 export const getAllCourse = ({page, perPage, nameCourse, type}) => {
   try {

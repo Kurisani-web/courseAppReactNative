@@ -12,55 +12,60 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
+import {useSelector} from 'react-redux';
 import {AuthContext} from '~/common/AppContext';
 import {Commons} from '~/common/Commons';
 import Constants from '~/common/Constants';
 import ButtonCustom from '~/components/ButtonCustom';
 import TextCustom from '~/components/TextCustom';
 import VectorIcon from '~/components/VectorIcon';
+import {dataUser} from '~/redux/features/userReducer';
 
-function RegisterScreen() {
+function EditProfile() {
+  const {currentUser} = useSelector(dataUser);
   const navigation = useNavigation();
-  const {register} = useContext(AuthContext);
+  const {editProfile} = useContext(AuthContext);
   const [data, setData] = useState({
-    username: '',
+    id: currentUser._id,
     password: '',
     confirmPW: '',
-    fullName: '',
-    email: '',
-    phone: '',
-    address: '',
+    fullName: currentUser.fullName,
+    email: currentUser.email,
+    phone: currentUser.phone,
+    address: currentUser.address,
   });
 
   const onChangeText = (name, text) => {
     setData({...data, [name]: text});
   };
 
-  const handleRegister = () => {
+  const handleEdit = () => {
     if (!Commons.validateEmail(data.email)) {
       Toast.show({
         type: 'error',
         text1: 'Vui lòng nhập đúng định dạng email',
       });
-    } else if (!Commons.validatePassword(data.password)) {
-      Toast.show({
-        type: 'error',
-        text1: 'Mật khẩu phải có độ dài tối thiểu là 8 ký tự',
-        text2:
-          'Mật khẩu phải có ít nhất một chữ cái viết thường, một chữ cái viết hoa, một chữ số, một ký tự đặc biệt',
-      });
-    } else if (data.password !== data.confirmPW) {
-      Toast.show({
-        type: 'error',
-        text1: 'Mật khẩu không trùng khớp',
-      });
+    } else if (data.password) {
+      if (!Commons.validatePassword(data.password)) {
+        Toast.show({
+          type: 'error',
+          text1: 'Mật khẩu phải có độ dài tối thiểu là 8 ký tự',
+          text2:
+            'Mật khẩu phải có ít nhất một chữ cái viết thường, một chữ cái viết hoa, một chữ số, một ký tự đặc biệt',
+        });
+      } else if (data.password !== data.confirmPW) {
+        Toast.show({
+          type: 'error',
+          text1: 'Mật khẩu không trùng khớp',
+        });
+      }
     } else if (!Commons.validatePhoneNumber(data.phone)) {
       Toast.show({
         type: 'error',
         text1: 'Số điện thoại không hợp lệ',
       });
     } else {
-      register(data, navigation);
+        editProfile(data);
     }
   };
 
@@ -72,23 +77,10 @@ function RegisterScreen() {
         contentContainerStyle={styles.scrollContainer}
         keyboardShouldPersistTaps="handled">
         <View style={styles.boxLogin}>
-          <Text style={styles.title}>Bạn chưa có tài khoản?</Text>
+          <Text style={styles.title}>Bạn thấy thông tin không đúng?</Text>
           <Text style={{fontWeight: '400', fontSize: 13, marginTop: 4}}>
-            Đừng lo hãy tạo một tài khoản để sử dụng
+            Đừng lo hãy thử thay đổi nó đi
           </Text>
-          <Text style={styles.labelInput}>Tài khoản</Text>
-          <TextCustom
-            label={'Tài khoản'}
-            name={'username'}
-            onChangeText={onChangeText}
-            Icon={
-              <VectorIcon.FontAwesomeVectorIcon
-                name="user"
-                size={20}
-                color={Constants.darkBlue}
-              />
-            }
-          />
           <Text style={styles.labelInput}>Mật khẩu</Text>
           <TextCustom
             label={'Mật khẩu'}
@@ -122,6 +114,7 @@ function RegisterScreen() {
             label={'Họ và tên'}
             name={'fullName'}
             onChangeText={onChangeText}
+            value={data.fullName}
             Icon={
               <VectorIcon.FontAwesomeVectorIcon
                 name="user"
@@ -135,6 +128,7 @@ function RegisterScreen() {
             label={'Địa chỉ nhà'}
             name={'address'}
             onChangeText={onChangeText}
+            value={data.address}
             Icon={
               <VectorIcon.EntypoVectorIcon
                 name="address"
@@ -148,6 +142,7 @@ function RegisterScreen() {
             label={'Email'}
             name={'email'}
             onChangeText={onChangeText}
+            value={data.email}
             Icon={
               <VectorIcon.MaterialVectorIcon
                 name="alternate-email"
@@ -161,6 +156,7 @@ function RegisterScreen() {
             label={'Số điện thoại'}
             name={'phone'}
             onChangeText={onChangeText}
+            value={data.phone}
             keyboardType={'number'}
             Icon={
               <VectorIcon.FontAwesomeVectorIcon
@@ -171,33 +167,7 @@ function RegisterScreen() {
             }
           />
 
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-              marginVertical: 14,
-            }}>
-            <TouchableOpacity onPress={() => navigation.navigate('ForgotPW')}>
-              <Text
-                style={{
-                  color: Constants.darkBlue,
-                  fontWeight: 'bold',
-                }}>
-                Quên mật khẩu
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <ButtonCustom title={'Đăng ký'} onPress={() => handleRegister()} />
-
-          <TouchableOpacity
-            style={{marginVertical: 10}}
-            onPress={() => navigation.navigate('Login')}>
-            <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
-              Đã có tài khoản?
-              <Text style={{color: Constants.darkBlue}}> Đăng nhập.</Text>
-            </Text>
-          </TouchableOpacity>
+          <ButtonCustom title={'Thay đổi'} onPress={() => handleEdit()} />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -232,4 +202,4 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
 });
-export default RegisterScreen;
+export default EditProfile;

@@ -72,7 +72,6 @@ export const deleteRecruitment = async ({id}) => {
 export const editRecruitment = async ({id, data}) => {
   try {
     const token = await getToken();
-
     const res = await httpRequest.put(`recruitment/edit/${id}`, data, {
       headers: {authorization: 'Bearer ' + token},
     });

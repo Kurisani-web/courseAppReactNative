@@ -1,30 +1,27 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Courses from '~/screens/Courses';
 import DetailCourse from '~/screens/DetailCourse';
-import HomeScreen from '~/screens/HomeScreen';
 import PaymentResult from '~/screens/PaymentResult';
 
 const Stack = createNativeStackNavigator();
 
-function HomeStack() {
+function CourseStack() {
   return (
     <Stack.Navigator
       screenOptions={{
         title: 'Trở về',
       }}>
       <Stack.Screen
-        name="Home"
-        component={HomeScreen}
+        name="Course"
+        component={Courses}
         options={{
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="DetailCourse"
-        component={DetailCourse}
-      />
+      <Stack.Screen name="DetailCourse" component={DetailCourse} />
       <Stack.Screen name="PaymentResult" component={PaymentResult} options={{headerShown: false}}/>
-      </Stack.Navigator>
+    </Stack.Navigator>
   );
 }
 
-export default HomeStack;
+export default CourseStack;
