@@ -19,13 +19,16 @@ function DetailCourse() {
   const [url, setUrl] = useState('');
 
   useEffect(() => {
-    const res = dataMyCourse.filter(item => item.courseId, data._id);
+    const res = dataMyCourse.filter(
+      item => item.courseId._id === data._id || item.courseId === data._id,
+    );
+    console.log(res);
     if (res.length > 0) {
       setSolid(true);
     } else {
       setSolid(false);
     }
-  }, [dataMyCourse,data]);
+  }, [dataMyCourse, data]);
 
   const handleBuy = () => {
     if (!solid) {
@@ -42,7 +45,7 @@ function DetailCourse() {
         .catch(error => console.log(error));
     }
   };
-  
+
   const handleEvent = event => {
     const native = event.nativeEvent.url;
     if (native.includes('payment-result')) {
