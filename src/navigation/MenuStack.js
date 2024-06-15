@@ -1,5 +1,7 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import DrawerCustom from '~/components/DrawerCustom';
 import DetailCourse from '~/screens/DetailCourse';
+import DetailLesson from '~/screens/DetailLesson';
 import DetailRecruitment from '~/screens/DetailRecruitment';
 import EditProfile from '~/screens/EditProfile';
 import MenuScreen from '~/screens/MenuScreen';
@@ -7,22 +9,42 @@ import MyCourse from '~/screens/MyCourse';
 import MyRecruitment from '~/screens/MyRecruitment';
 import PaymentResult from '~/screens/PaymentResult';
 
-const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 function MenuStack() {
   return (
-    <Stack.Navigator
+    <Drawer.Navigator
+      drawerContent={props => <DrawerCustom {...props} />}
       screenOptions={{
         title: 'Trở về',
+        swipeEnabled: false,
+        drawerPosition: 'right',
       }}>
-      <Stack.Screen name="Menu" component={MenuScreen} options={{headerShown: false}}/>
-      <Stack.Screen name="MyCourse" component={MyCourse} />
-      <Stack.Screen name="MyRecruitment" component={MyRecruitment} />
-      <Stack.Screen name="DetailRecruitment" component={DetailRecruitment} />
-      <Stack.Screen name="DetailCourse" component={DetailCourse} />
-      <Stack.Screen name="EditProfile" component={EditProfile} />
-      <Stack.Screen name="PaymentResult" component={PaymentResult} options={{headerShown: false}}/>
-      </Stack.Navigator>
+      <Drawer.Screen
+        name="Menu"
+        component={MenuScreen}
+        options={{headerShown: false}}
+      />
+      <Drawer.Screen name="MyCourse" component={MyCourse} />
+      <Drawer.Screen name="MyRecruitment" component={MyRecruitment} />
+      <Drawer.Screen name="DetailRecruitment" component={DetailRecruitment} />
+      <Drawer.Screen
+        name="DetailCourse"
+        component={DetailCourse}
+        options={{swipeEnabled: true, headerShown: false}}
+      />
+      <Drawer.Screen
+        name="DetailLesson"
+        component={DetailLesson}
+        options={{swipeEnabled: true, headerShown: false}}
+      />
+      <Drawer.Screen name="EditProfile" component={EditProfile} />
+      <Drawer.Screen
+        name="PaymentResult"
+        component={PaymentResult}
+        options={{headerShown: false}}
+      />
+    </Drawer.Navigator>
   );
 }
 

@@ -4,13 +4,15 @@ import forgotReducer from '~/redux/features/forgotReducer';
 import recruitmentReducer from '~/redux/features/recruitmentReducer';
 import userReducer from '~/redux/features/userReducer';
 import myCourseReducer from './features/myCourseReducer';
+import LessonReducer from './features/LessonReducer';
 
 export const store = configureStore({
   reducer: {
     userReducer,
     forgotReducer,
     courseReducer,
-    recruitmentReducer,
+    LessonReducer,
     myCourseReducer,
+    recruitmentReducer,
   },
 });

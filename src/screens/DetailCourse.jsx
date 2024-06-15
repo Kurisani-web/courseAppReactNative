@@ -1,7 +1,7 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Constants from '~/common/Constants';
 import AvatarCustoms from '~/components/AvatarCustoms';
 import ButtonCustom from '~/components/ButtonCustom';
@@ -9,9 +9,12 @@ import ConvertHTMLToText from '~/components/ConvertHTMLToText';
 import {listMyCourse} from '~/redux/features/myCourseReducer';
 import {createUrlVnPay} from '~/services/paymentService';
 import WebView from 'react-native-webview';
+import {setLesson} from '~/redux/features/LessonReducer';
+import HeaderDrawer from '~/components/HeaderDrawer';
 
 function DetailCourse() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const {dataMyCourse} = useSelector(listMyCourse);
   const route = useRoute();
   const {data} = route.params;
@@ -22,11 +25,12 @@ function DetailCourse() {
     const res = dataMyCourse.filter(
       item => item.courseId._id === data._id || item.courseId === data._id,
     );
-    console.log(res);
     if (res.length > 0) {
       setSolid(true);
+      dispatch(setLesson(data.lesson));
     } else {
       setSolid(false);
+      dispatch(setLesson([]));
     }
   }, [dataMyCourse, data]);
 
@@ -61,21 +65,24 @@ function DetailCourse() {
       {url ? (
         <WebView source={{uri: url}} onLoadEnd={handleEvent} />
       ) : (
-        <ScrollView style={styles.container}>
-          <Image source={{uri: data.imageUrl}} style={styles.imageCourse} />
-          <View style={styles.infoTeacher}>
-            <AvatarCustoms imageUrl={data.teacherId?.imageUrl} />
-            <Text style={{fontWeight: 600, color: Constants.darkBlue}}>
-              {data.teacherId?.fullName}
-            </Text>
-          </View>
-          <Text style={styles.titleCourse}>{data.nameCourse}</Text>
-          <ConvertHTMLToText data={data.description} />
-          <ButtonCustom
-            title={solid ? 'Đã mua' : 'Mua ngay'}
-            onPress={handleBuy}
-          />
-        </ScrollView>
+        <View>
+          <HeaderDrawer />
+          <ScrollView style={styles.container}>
+            <Image source={{uri: data.imageUrl}} style={styles.imageCourse} />
+            <View style={styles.infoTeacher}>
+              <AvatarCustoms imageUrl={data.teacherId?.imageUrl} />
+              <Text style={{fontWeight: 600, color: Constants.darkBlue}}>
+                {data.teacherId?.fullName}
+              </Text>
+            </View>
+            <Text style={styles.titleCourse}>{data.nameCourse}</Text>
+            <ConvertHTMLToText data={data.description} />
+            <ButtonCustom
+              title={solid ? 'Đã mua' : 'Mua ngay'}
+              onPress={handleBuy}
+            />
+          </ScrollView>
+        </View>
       )}
     </>
   );

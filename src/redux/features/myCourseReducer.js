@@ -11,7 +11,6 @@ export const MyCourseSlice = createSlice({
     },
     addMyCourse: (state, action) => {
       state.dataMyCourse = [...state.dataMyCourse, action.payload];
-      console.log(action.payload);
     },
   },
 });

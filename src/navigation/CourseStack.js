@@ -1,26 +1,44 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import DrawerCustom from '~/components/DrawerCustom';
 import Courses from '~/screens/Courses';
 import DetailCourse from '~/screens/DetailCourse';
+import DetailLesson from '~/screens/DetailLesson';
 import PaymentResult from '~/screens/PaymentResult';
 
-const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 function CourseStack() {
   return (
-    <Stack.Navigator
+    <Drawer.Navigator
+      drawerContent={props => <DrawerCustom {...props} />}
       screenOptions={{
         title: 'Trở về',
+        swipeEnabled: false,
+        drawerPosition: 'right',
       }}>
-      <Stack.Screen
+      <Drawer.Screen
         name="Course"
         component={Courses}
         options={{
           headerShown: false,
         }}
       />
-      <Stack.Screen name="DetailCourse" component={DetailCourse} />
-      <Stack.Screen name="PaymentResult" component={PaymentResult} options={{headerShown: false}}/>
-    </Stack.Navigator>
+      <Drawer.Screen
+        name="DetailCourse"
+        component={DetailCourse}
+        options={{swipeEnabled: true, headerShown: false}}
+      />
+      <Drawer.Screen
+        name="DetailLesson"
+        component={DetailLesson}
+        options={{swipeEnabled: true, headerShown: false}}
+      />
+      <Drawer.Screen
+        name="PaymentResult"
+        component={PaymentResult}
+        options={{headerShown: false}}
+      />
+    </Drawer.Navigator>
   );
 }
 

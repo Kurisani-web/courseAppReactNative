@@ -30,7 +30,7 @@ function MyCourse() {
   useEffect(() => {
     fetch();
   }, [fetch]);
-
+console.log(data);
   return (
     <ScrollView
       style={styles.container}

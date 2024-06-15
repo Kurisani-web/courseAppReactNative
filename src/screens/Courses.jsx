@@ -9,12 +9,17 @@ import {
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import { Commons } from '~/common/Commons';
+import {Commons} from '~/common/Commons';
 
 import Constants from '~/common/Constants';
 import ListCourse from '~/components/ListCourse';
 import VectorIcon from '~/components/VectorIcon';
-import {dataCourse, searchInput, setCourse, toggleType} from '~/redux/features/courseReducer';
+import {
+  dataCourse,
+  searchInput,
+  setCourse,
+  toggleType,
+} from '~/redux/features/courseReducer';
 import {getAllCourse} from '~/services/courseService';
 
 function Courses() {
@@ -26,9 +31,8 @@ function Courses() {
 
   const fetchCourse = useCallback(() => {
     setIsLoading(true);
-    getAllCourse({page: 1, perPage: 5, type: type, nameCourse: search})
+    getAllCourse({type: type, nameCourse: search})
       .then(course => {
-        console.log(course.data);
         dispatch(setCourse(course.data.data));
         setIsLoading(false);
       })
@@ -118,8 +122,8 @@ const styles = StyleSheet.create({
     backgroundColor: Constants.grayOpacity,
     paddingHorizontal: 10,
     borderRadius: 10,
-    borderWidth:1,
-    borderColor: Constants.borderGray
+    borderWidth: 1,
+    borderColor: Constants.borderGray,
   },
   searchInput: {
     width: '90%',
