@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import {httpRequest} from '~/utils/httprequest';
 
 const getToken = async () => {
@@ -113,9 +114,11 @@ export const handleApplyCV = async data => {
 export const applyRecruitment = async ({data}) => {
   try {
     const token = await getToken();
-
     const res = await httpRequest.put(`recruitment/apply-recruitment`, data, {
-      headers: {authorization: 'Bearer ' + token},
+      headers: {
+        authorization: 'Bearer ' + token,
+        'Content-Type': 'multipart/form-data',
+      },
     });
 
     return res;

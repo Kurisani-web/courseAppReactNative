@@ -1,5 +1,6 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import DrawerCustom from '~/components/DrawerCustom';
+import HeaderDrawer from '~/components/HeaderDrawer';
 import Courses from '~/screens/Courses';
 import DetailCourse from '~/screens/DetailCourse';
 import DetailLesson from '~/screens/DetailLesson';
@@ -26,12 +27,18 @@ function CourseStack() {
       <Drawer.Screen
         name="DetailCourse"
         component={DetailCourse}
-        options={{swipeEnabled: true, headerShown: false}}
+        options={{
+          swipeEnabled: true,
+          header: () => <HeaderDrawer swipeEnabled={true} />,
+        }}
       />
       <Drawer.Screen
         name="DetailLesson"
         component={DetailLesson}
-        options={{swipeEnabled: true, headerShown: false}}
+        options={{
+          swipeEnabled: true,
+          header: () => <HeaderDrawer swipeEnabled={true} />,
+        }}
       />
       <Drawer.Screen
         name="PaymentResult"

@@ -1,5 +1,6 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import DrawerCustom from '~/components/DrawerCustom';
+import HeaderDrawer from '~/components/HeaderDrawer';
 import DetailCourse from '~/screens/DetailCourse';
 import DetailLesson from '~/screens/DetailLesson';
 import DetailRecruitment from '~/screens/DetailRecruitment';
@@ -23,26 +24,53 @@ function MenuStack() {
       <Drawer.Screen
         name="Menu"
         component={MenuScreen}
-        options={{headerShown: false}}
+        options={{
+          headerShown: false,
+        }}
       />
-      <Drawer.Screen name="MyCourse" component={MyCourse} />
-      <Drawer.Screen name="MyRecruitment" component={MyRecruitment} />
-      <Drawer.Screen name="DetailRecruitment" component={DetailRecruitment} />
+      <Drawer.Screen
+        name="MyCourse"
+        component={MyCourse}
+        options={{
+          header: () => <HeaderDrawer />,
+        }}
+      />
+      <Drawer.Screen
+        name="MyRecruitment"
+        component={MyRecruitment}
+        options={{
+          header: () => <HeaderDrawer />,
+        }}
+      />
+      <Drawer.Screen
+        name="DetailRecruitment"
+        component={DetailRecruitment}
+        options={{
+          header: () => <HeaderDrawer />,
+        }}
+      />
       <Drawer.Screen
         name="DetailCourse"
         component={DetailCourse}
-        options={{swipeEnabled: true, headerShown: false}}
+        options={{
+          swipeEnabled: true,
+          header: () => <HeaderDrawer swipeEnabled={true} />,
+        }}
       />
       <Drawer.Screen
         name="DetailLesson"
         component={DetailLesson}
-        options={{swipeEnabled: true, headerShown: false}}
+        options={{
+          swipeEnabled: true,
+          header: () => <HeaderDrawer swipeEnabled={true} />,
+        }}
       />
-      <Drawer.Screen name="EditProfile" component={EditProfile} />
       <Drawer.Screen
-        name="PaymentResult"
-        component={PaymentResult}
-        options={{headerShown: false}}
+        name="EditProfile"
+        component={EditProfile}
+        options={{
+          header: () => <HeaderDrawer />,
+        }}
       />
     </Drawer.Navigator>
   );

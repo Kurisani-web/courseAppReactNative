@@ -4,13 +4,14 @@ export const forgotSlice = createSlice({
   name: 'forgotReducer',
   initialState: {
     email: '',
-    toggle: false,
-    codeNumber: "",
+    toggle: "Default",
+    codeReset: '',
   },
   reducers: {
-    handleSent: (state,action) => {
+    handleSent: (state, action) => {
       state.email = action.payload.email;
-      state.toggle = true;
+      state.codeReset = action.payload.codeReset;
+      state.toggle = action.payload.toggle;
     },
   },
 });

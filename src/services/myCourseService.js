@@ -31,7 +31,7 @@ export const getMyCourse = async ({ page, perPage }) => {
 
 export const trackingProgress = async ({ lessonId, courseId }) => {
   try {
-    const token = token;
+    const token = await getToken();
     const res = await httpRequest.put(
       `my-course/tracking-progress`,
       {

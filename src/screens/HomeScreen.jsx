@@ -32,7 +32,6 @@ import {getAllRecruitment} from '~/services/recruitmentService';
 function HomeScreen() {
   const {typeHome, searchHome, dataHome} = useSelector(dataCourse);
   const {dataHomeRecruitment} = useSelector(dataRecruitment);
-  const {dataMyCourse} = useSelector(listMyCourse);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);

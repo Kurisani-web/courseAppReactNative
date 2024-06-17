@@ -7,6 +7,7 @@ import ButtonCustom from '~/components/ButtonCustom';
 import TextCustom from '~/components/TextCustom';
 import VectorIcon from '~/components/VectorIcon';
 import {handleSent} from '~/redux/features/forgotReducer';
+import {sentCode} from '~/services/forgotPassService';
 
 function SentEmail() {
   const [email, setEmail] = useState('');
@@ -24,7 +25,26 @@ function SentEmail() {
         text2: 'Hãy nhập email để quên mật khẩu',
       });
     } else {
-      dispatch(handleSent({email}));
+      sentCode({data: {email}}).then(code => {
+        if (code.status == 200) {
+          Toast.show({
+            type: 'success',
+            text1: 'Mã xác nhận đã được gửi đến email của bạn',
+          });
+          dispatch(
+            handleSent({
+              email: code.data.data.email,
+              codeReset: code.data.data.codeReset,
+              toggle: 'VerifyCode',
+            }),
+          );
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: code.message,
+          });
+        }
+      });
     }
   };
 

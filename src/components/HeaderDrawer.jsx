@@ -3,7 +3,7 @@ import VectorIcon from './VectorIcon';
 import {DrawerActions, useNavigation} from '@react-navigation/native';
 import Constants from '~/common/Constants';
 
-function HeaderDrawer() {
+function HeaderDrawer({swipeEnabled = false}) {
   const navigation = useNavigation();
 
   return (
@@ -11,10 +11,12 @@ function HeaderDrawer() {
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <VectorIcon.AntDesignVectorIcon name="arrowleft" size={20} />
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
-        <VectorIcon.AntDesignVectorIcon name="menu-fold" size={20} />
-      </TouchableOpacity>
+      {swipeEnabled && (
+        <TouchableOpacity
+          onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
+          <VectorIcon.AntDesignVectorIcon name="menu-fold" size={20} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }

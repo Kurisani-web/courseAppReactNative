@@ -6,13 +6,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 import {useDispatch, useSelector} from 'react-redux';
 import Constants from '~/common/Constants';
-import {dataForgot} from '~/redux/features/forgotReducer';
+import {dataForgot, handleSent} from '~/redux/features/forgotReducer';
+import {sentCode} from '~/services/forgotPassService';
 
 function VerifyCode() {
   const dispatch = useDispatch();
-  const {codeNumber} = useSelector(dataForgot);
+  const {codeReset, email} = useSelector(dataForgot);
   const [values, setValues] = useState(['', '', '', '']);
   const inputs = useRef([]);
 
@@ -20,14 +22,27 @@ function VerifyCode() {
     if (/^\d$/.test(text)) {
       const newValues = [...values];
       newValues[index] = text;
-      setValues(newValues);
 
+      setValues(newValues);
       if (index < 3) {
         inputs.current[index + 1].focus();
       }
-
-      if (index === 3) {
-        console.log(13);
+      if (index >= 3) {
+        const convertValue = newValues.join('');
+        if (parseInt(convertValue) === codeReset) {
+          dispatch(
+            handleSent({
+              email: email,
+              codeReset: codeReset,
+              toggle: 'ResetPassword',
+            }),
+          );
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: 'Mã xác nhận không đúng',
+          });
+        }
       }
     } else {
       const newValues = [...values];
@@ -44,6 +59,28 @@ function VerifyCode() {
     ) {
       inputs.current[index - 1].focus();
     }
+  };
+
+  const reSent = () => {
+    sentCode({data: {email}}).then(code => {
+      if (code.status == 200) {
+        Toast.show({
+          type: 'success',
+          text1: 'Mã xác nhận đã được gửi đến email của bạn',
+        });
+        dispatch(
+          handleSent({
+            email: code.data.data.email,
+            codeReset: code.data.data.codeReset,
+          }),
+        );
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: code.message,
+        });
+      }
+    });
   };
 
   return (
@@ -68,7 +105,7 @@ function VerifyCode() {
         ))}
       </View>
 
-      <TouchableOpacity style={styles.btnResent}>
+      <TouchableOpacity style={styles.btnResent} onPress={reSent}>
         <Text style={styles.textResent}>Chưa nhận được mã? Gửi lại</Text>
       </TouchableOpacity>
     </View>
@@ -115,7 +152,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   btnResent: {
-    marginTop: 20
+    marginTop: 20,
   },
   textResent: {
     color: Constants.darkBlue,
@@ -124,7 +161,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
     marginBottom: 20,
-  }
+  },
 });
 
 export default VerifyCode;

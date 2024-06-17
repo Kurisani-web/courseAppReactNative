@@ -1,14 +1,18 @@
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import {useNavigation} from '@react-navigation/native';
+import {useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {useSelector} from 'react-redux';
+import Constants from '~/common/Constants';
 import {listLesson} from '~/redux/features/LessonReducer';
+import {getLessonById} from '~/services/lessonService';
 
-const {height} = Dimensions.get("window")
+const {height} = Dimensions.get('window');
 
 function DrawerCustom(props) {
   const navigation = useNavigation();
   const {dataLesson} = useSelector(listLesson);
+  const [focusedItem, setFocusedItem] = useState(null);
 
   return (
     <DrawerContentScrollView {...props}>
@@ -17,9 +21,12 @@ function DrawerCustom(props) {
           <DrawerItem
             key={item._id}
             label={item.nameLesson}
-            onPress={() =>
-              navigation.navigate('DetailLesson', {dataLesson: item})
-            }
+            onPress={() => {
+              setFocusedItem(item._id);
+              navigation.navigate('DetailLesson', {dataLesson: item});
+            }}
+            style={[focusedItem === item._id && styles.focusedDrawerItem]}
+            labelStyle={focusedItem === item._id ? styles.focusedLabel : null}
           />
         ))
       ) : (
@@ -38,6 +45,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: height,
+  },
+  focusedDrawerItem: {
+    backgroundColor: Constants.darkBlue,
+  },
+  focusedLabel: {
+    color: Constants.white,
   },
   text: {
     fontSize: 16,

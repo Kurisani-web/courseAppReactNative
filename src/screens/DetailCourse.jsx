@@ -66,7 +66,6 @@ function DetailCourse() {
         <WebView source={{uri: url}} onLoadEnd={handleEvent} />
       ) : (
         <View>
-          <HeaderDrawer />
           <ScrollView style={styles.container}>
             <Image source={{uri: data.imageUrl}} style={styles.imageCourse} />
             <View style={styles.infoTeacher}>

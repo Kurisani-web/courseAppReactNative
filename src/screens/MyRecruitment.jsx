@@ -20,7 +20,7 @@ function MyRecruitment() {
 
   return (
     <View style={styles.container}>
-      <ListRecruitment data={data} />
+      <ListRecruitment data={data} showStatus={true} />
     </View>
   );
 }

@@ -1,11 +1,14 @@
+import {useIsFocused} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Dimensions} from 'react-native';
 import Video from 'react-native-video';
+import {trackingProgress} from '~/services/myCourseService';
 
 const {width} = Dimensions.get('window');
 
 const VideoCustom = ({data}) => {
   const [reachedSeventyPercent, setReachedSeventyPercent] = useState(false);
+  const isFocus = useIsFocused();
 
   const onProgress = event => {
     if (!reachedSeventyPercent) {
@@ -15,10 +18,9 @@ const VideoCustom = ({data}) => {
       }
     }
   };
-console.log(data.courseId);
+
   const putTracking = () => {
-    myCourseService
-      .trackingProgress({lessonId: id, courseId: data.courseId})
+    trackingProgress({lessonId: data._id, courseId: data.courseId})
       .then(result => console.log(result))
       .catch(err => console.log(err));
   };
@@ -35,7 +37,7 @@ console.log(data.courseId);
       style={styles.video}
       resizeMode="contain"
       controls
-      paused
+      paused={!isFocus}
       onProgress={onProgress}
     />
   );
