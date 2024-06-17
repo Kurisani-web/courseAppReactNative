@@ -1,10 +1,10 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 import Constants from '~/common/Constants';
 import VectorIcon from '~/components/VectorIcon';
-import { addMyCourse } from '~/redux/features/myCourseReducer';
+import {addMyCourse} from '~/redux/features/myCourseReducer';
 import {buyCourse} from '~/services/myCourseService';
 import {callbackVnPay} from '~/services/paymentService';
 
@@ -60,7 +60,7 @@ function PaymentResult() {
     };
 
     processPaymentResult();
-  }, [dataResult, callbackVnPay,success]);
+  }, [dataResult, callbackVnPay, success]);
 
   return (
     <View
@@ -90,7 +90,7 @@ function PaymentResult() {
 
       <TouchableOpacity
         style={{marginTop: 10}}
-        onPress={() => navigation.navigate("Home")}>
+        onPress={() => navigation.navigate('Home')}>
         <Text
           style={{
             fontWeight: 700,

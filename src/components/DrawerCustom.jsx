@@ -31,8 +31,7 @@ function DrawerCustom(props) {
         ))
       ) : (
         <View style={styles.container}>
-          <Text style={styles.text}>Khóa học chưa mua?</Text>
-          <Text style={styles.text}>Hãy mua để nâng cao kiến thức.</Text>
+          <Text style={styles.text}>Khóa học chưa mua hoặc chưa có bài?</Text>
         </View>
       )}
     </DrawerContentScrollView>
@@ -45,6 +44,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: height,
+    paddingHorizontal: 50,
   },
   focusedDrawerItem: {
     backgroundColor: Constants.darkBlue,

@@ -6,11 +6,12 @@ import Constants from '~/common/Constants';
 import AvatarCustoms from '~/components/AvatarCustoms';
 import ButtonCustom from '~/components/ButtonCustom';
 import ConvertHTMLToText from '~/components/ConvertHTMLToText';
-import {listMyCourse} from '~/redux/features/myCourseReducer';
+import {addMyCourse, listMyCourse} from '~/redux/features/myCourseReducer';
 import {createUrlVnPay} from '~/services/paymentService';
 import WebView from 'react-native-webview';
 import {setLesson} from '~/redux/features/LessonReducer';
 import HeaderDrawer from '~/components/HeaderDrawer';
+import {buyCourse} from '~/services/myCourseService';
 
 function DetailCourse() {
   const navigation = useNavigation();
@@ -35,7 +36,13 @@ function DetailCourse() {
   }, [dataMyCourse, data]);
 
   const handleBuy = () => {
-    if (!solid) {
+    if (data.price === 0) {
+      setSolid(true);
+      dispatch(setLesson(data.lesson));
+      buyCourse({courseId: data._id}).then(response => {
+        dispatch(addMyCourse(response.data.data));
+      });
+    } else if (!solid) {
       const dataPayment = {
         amount: data.price,
         language: 'vn',
@@ -77,7 +84,9 @@ function DetailCourse() {
             <Text style={styles.titleCourse}>{data.nameCourse}</Text>
             <ConvertHTMLToText data={data.description} />
             <ButtonCustom
-              title={solid ? 'Đã mua' : 'Mua ngay'}
+              title={
+                solid ? 'Đã mua' : data.price === 0 ? 'Nhận ngay' : 'Mua ngay'
+              }
               onPress={handleBuy}
             />
           </ScrollView>
