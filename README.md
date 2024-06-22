@@ -9,10 +9,8 @@ The Online Course Marketplace App allows users to easily search, enroll, and stu
 - [Installation](#installation)
 - [Usage](#usage)
 - [Architecture](#architecture)
-- [Testing](#testing)
+- [Testing](#test)
 - [Deployment](#deployment)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 
