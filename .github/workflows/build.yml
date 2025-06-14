@@ -3,11 +3,11 @@ name: CI – Android Debug Build
 on:
   push:
     branches:
-      - main
+      - master
       - 'release/*'
   pull_request:
     branches:
-      - main
+      - master
       - 'release/*'
 
 jobs:
