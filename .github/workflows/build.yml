@@ -32,6 +32,9 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
+      - name: make gradlew executable
+        run: chmod +x android/gradlew
+
       - name: Build debug APK
         working-directory: android
         run: ./gradlew assembleDebug
