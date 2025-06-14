@@ -32,16 +32,6 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          api-level: 33
-          build-tools: 33.0.2
-          ndk: false
-
-      - name: Accept licenses
-        run: yes | sdkmanager --licenses
-
       - name: Build debug APK
         working-directory: android
         run: ./gradlew assembleDebug
